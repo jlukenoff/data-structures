@@ -21,28 +21,21 @@ treeMethods.addChild = function(value) {
   this.children.push(tree);
 };
 
-treeMethods.contains = function(target, node) {
-  node = node || this;
-  //check if node.value ==== target
-  if (node.value === target) {
-    return true;
+treeMethods.contains = function(target) {
+  let isTrue = false;
+  let checkVal = function(tree) {
+    if (tree.value === target) {
+      isTrue = true;
+    }
+    for (let i = 0; i < tree.children.length; i++) {
+      checkVal(tree.children[i]);
+    }
   }
-  //iterate through children
-  for (let i = 0; i < node.children.length; i++) {
-    //call contains on each child
-    return treeMethods.contains(target, node.children[i]);
-  }
-  return false;
+  
+  checkVal(this);
+  return isTrue;
 };
 
-let tree = Tree();
-tree.addChild(5);
-tree.addChild(6);
-tree/*?*/.children[0].addChild(7);
-tree.children[1].addChild(8);
-tree;//?
-tree.contains(8);//?
-tree.contains(7);//?
 
 
 /*
