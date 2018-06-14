@@ -28,18 +28,31 @@ var BinarySearchTree = function(value) {
   }
   
   tree.contains = function(target, node) {
-    //check if target == node.value
+    node = node || tree;
+    if (target == node.value) {
       return true;
     //else if target > node.value and node.right !== undefined
-      // contains(target, node.right)
-    else 
-    
+    } else if (target > node.value && node.right !== undefined) {
+      return tree.contains(target, node.right)
+    //else if target < node.value and node.left !== undefined
+    } else if (target < node.value && node.left !== undefined) {
+      // return contains(target, node.left)
+      return tree.contains(target, node.left);
+    } 
+    return false;   
   }
   
-  tree.depthFirstLog = function(node) {
-    let logged = [];
-    
-    return logged;
+  tree.depthFirstLog = function(func, node) {
+    node = node || tree;
+    func(node.value);
+    //chcek if node.left
+    if (node.left) {
+      tree.depthFirstLog(func, node.left);
+    }
+    //check if node.right
+    if (node.right) {
+      tree.depthFirstLog(func, node.right);
+    }
   }
   
   return tree;
