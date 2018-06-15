@@ -6,9 +6,18 @@ var HashTable = function() {
 };
 
 HashTable.prototype.insert = function(k, v) {
-  // debugger;
   var index = getIndexBelowMaxForKey(k, this._limit);
-  this._storage.set(index, v);
+  let currentData = this._storage.get(index);
+  if (currentData !== undefined) {  
+    this._storage.each(function(val, i, storage) {  
+      if (i === index) {
+        storage[i].push([k, v]);
+      }
+    });
+  } else {
+    this._storage.set(index, [k, v]);
+  }
+  
 };
 
 HashTable.prototype.retrieve = function(k) {
@@ -16,17 +25,22 @@ HashTable.prototype.retrieve = function(k) {
   // function(index) {
   //   checkLimit(index);
   //   return storage[index];
-  return this._storage.get(index);
+  
+  let tuple = this._storage.get(index);
+  return tuple[1];
 };
 
 HashTable.prototype.remove = function(k) {
   var index = getIndexBelowMaxForKey(k, this._limit);
   this._storage.each(function(v, i, storage) {  
-    if (i === index) {
-      storage.splice(i, 1);
+    if (storage[i][1] === index) {
+      storage[i].splice(1, 1);
     }
   });
 };
+
+
+
 
 
 
