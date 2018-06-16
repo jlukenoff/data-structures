@@ -43,7 +43,6 @@ HashTable.prototype.insert = function(k, v) {
     this._storage.set(index, ([k, v]));
     //increment capacity
     this._capacity++;
-    console.log(this._capacity);
     //check if capacity >75% limit
     if (this._capacity > this._limit * .60) {
       //create new hash table array
