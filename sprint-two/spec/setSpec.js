@@ -30,6 +30,13 @@ describe('set', function() {
     set.remove('Mel Gibson');
     expect(set.contains('Mel Gibson')).to.equal(false);
   });
+  
+  it('should add objects and numbers to a set', function() {
+    set.add({'Susan Sarandon': [[['foo']]]});
+    set.add(6734);
+    expect(set.contains({'Susan Sarandon': [[['foo']]]})).to.equal(true);
+    expect(set.contains(6734)).to.equal(true);
+  });
 
 
 });
