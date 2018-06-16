@@ -7,6 +7,24 @@ var HashTable = function() {
 
 HashTable.prototype.insert = function(k, v) {
   var index = getIndexBelowMaxForKey(k, this._limit);
+  
+  //fix this
+  var arrayExpand = function() {
+    let count = 0;
+    this._storage.each(function(v, k, storage) {
+      if (storage[k]) {
+        count++;
+      }
+    })
+    if (count >= this._limit * .75) {
+      console.log('yes');
+      this._limit *= 2;
+    }
+  };
+  arrayExpand.call(this);
+  
+  
+  //this works
   let currentData = this._storage.get(index);
   if (currentData) {
     let isDuplicate = false
@@ -30,18 +48,25 @@ HashTable.prototype.insert = function(k, v) {
 HashTable.prototype.retrieve = function(k) {
   var index = getIndexBelowMaxForKey(k, this._limit);
   let currentData = this._storage.get(index);
+  if (currentData.length <= 2) {
+     return currentData[1]; 
+  }  
   for (let i = 0; i < currentData.length; i += 2) {
     if (currentData[i] === k) {
       return currentData[i + 1];
     }
   }
+  
 };
 
 HashTable.prototype.remove = function(k) {
   var index = getIndexBelowMaxForKey(k, this._limit);
   let currentData = this._storage.get(index);
-    for (let i = 0; i < currentData.length; i++) {
-      if (currentData[i] === k) {
+  if (currentData.length <= 2) {
+     currentData.splice(0, 2); 
+  }  
+  for (let i = 0; i < currentData.length; i++) {
+    if (currentData[i] === k) {
       currentData.splice(i, 2)
     }
   }

@@ -2,32 +2,50 @@ var LinkedList = function() {
   var list = {};
   list.head = null;
   list.tail = null;
-
-  list.addToTail = function(value) {
-    //create new Node and set node.value to value
+//O(1)
+  list.addToTail = value => {
     let node = Node(value);
-    //chcek if list is empty
     if (list.head === null) {
-      //set list.head, list.tail to node
       list.head = node;
       list.tail = node;
     } else {
-      //point tail.next to node
       list.tail.next = node;
-      //set tail to node
+      node.prev = list.tail;
       list.tail = node;
     }
   };
-
-  list.removeHead = function() {
+  //O(1)
+  list.addToHead = value => {
+    let node = Node(value);
+    if (list.head === null) {
+      list.head = node;
+      list.tail = node;
+    }
+    list.head.prev = node;
+    node.next = list.head;
+    list.head = node;
+  }
+  //O(1)
+  list.removeTail = () => {
+    let removed = list.tail.value;
+    list.tail = list.tail.prev;
+    list.tail.next = null;
+    return removed;
+  }
+//O(1)
+  list.removeHead = () => {
     //store removed value for return
     let removed = list.head.value;
-    //redirect head
-    list.head = list.head.next;
-    //return value
+    if (list.head.next !== null) { 
+      list.head = list.head.next;
+      list.head.prev = null;
+    } else {
+      list.head = list.head.next;
+    }
+
     return removed;
   };
-
+//O(n)
   list.contains = function(target) {
     //declare initial current
     let current = list.head;
