@@ -1,75 +1,112 @@
 
 
-var HashTable = function() {
-  this._limit = 8;
+var HashTable = function(limit = 8) {
+  //sets array size for hashing function
+  this._limit = limit;
+  
+  //stores hash table array
   this._storage = LimitedArray(this._limit);
+  
+  this._capacity = 0;
 };
-
+//For regular insert -> O(1), collision -> nearly O(1) and resizing is O(n)
 HashTable.prototype.insert = function(k, v) {
+  //finds index for given key
   var index = getIndexBelowMaxForKey(k, this._limit);
   
-  //fix this
-  var arrayExpand = function() {
-    let count = 0;
-    this._storage.each(function(v, k, storage) {
-      if (storage[k]) {
-        count++;
-      }
-    })
-    if (count >= this._limit * .75) {
-      console.log('yes');
-      this._limit *= 2;
-    }
-  };
-  arrayExpand.call(this);
+  //grabs current node from storage based on index
+  let currentNode = this._storage.get(index);
   
-  
-  //this works
-  let currentData = this._storage.get(index);
-  if (currentData) {
+  //check if node is already populated with data
+  if (currentNode) {
+    //tracks duplicate keys for overwriting
     let isDuplicate = false
-    for (let i = 0; i < currentData.length; i += 2) {
-      if (currentData[i] === k) {
+    
+    //iterate through node keys
+    for (let i = 0; i < currentNode.length; i += 2) {
+      //compare current key against given key
+      if (currentNode[i] === k) {
+        
+        //update duplicate tracker
         isDuplicate = true;
-        currentData[i + 1] = v;
+        //overwrite value for duplicate key
+        currentNode[i + 1] = v;
         break;
       }
     }
+    //handles collisions
     if (!isDuplicate) {
-      currentData.push(k);
-      currentData.push(v);
+      currentNode.push(k, v);
     }
   } else {
+    //handles non-collision insert
     this._storage.set(index, ([k, v]));
+    //increment capacity
+    this._capacity++;
+    console.log(this._capacity);
+    //check if capacity >75% limit
+    if (this._capacity > this._limit * .60) {
+      //create new hash table array
+      this._limit *= 2
+      let newHash = new HashTable(this._limit)
+      
+      //iterate through each node of current hash table
+      this._storage.each(function(value, index, storage) {
+        //insert k:v pairs to new hash storage
+        if (value !== undefined) newHash.insert(value[0], value[1]);
+      });
+      
+      this._storage = newHash._storage;
+    }   
   }
-  
 };
-
+//Retrieve is O(1) for regular, nearly O(1) for collision;
 HashTable.prototype.retrieve = function(k) {
   var index = getIndexBelowMaxForKey(k, this._limit);
-  let currentData = this._storage.get(index);
-  if (currentData.length <= 2) {
-     return currentData[1]; 
+  let currentNode = this._storage.get(index);
+  if (currentNode.length <= 2) {
+     return currentNode[1]; 
   }  
-  for (let i = 0; i < currentData.length; i += 2) {
-    if (currentData[i] === k) {
-      return currentData[i + 1];
+  for (let i = 0; i < currentNode.length; i += 2) {
+    if (currentNode[i] === k) {
+      return currentNode[i + 1];
     }
   }
   
 };
-
+//O(1) for removal, nearly O(1) for collision removal, O(n) for downsize
 HashTable.prototype.remove = function(k) {
   var index = getIndexBelowMaxForKey(k, this._limit);
-  let currentData = this._storage.get(index);
-  if (currentData.length <= 2) {
-     currentData.splice(0, 2); 
-  }  
-  for (let i = 0; i < currentData.length; i++) {
-    if (currentData[i] === k) {
-      currentData.splice(i, 2)
+  this._capacity--;
+  let currentNode = this._storage.get(index);
+  if (currentNode !== undefined) {
+    if (currentNode.length <= 2) {
+       delete currentNode; 
+    }  
+    for (let i = 0; i < currentNode.length; i += 2) {
+      if (currentNode[i] === k) {
+        currentNode.splice(i, 2)
+      }
     }
   }
+  if (this._capacity < this._limit * .30 && this._limit > 8) {
+    //create new hash table array
+    this._limit *= .5
+    let newHash = new HashTable(this._limit)
+    
+    //iterate through each node of current hash table
+    this._storage.each(function(value, index, storage) {
+      //insert k:v pairs to new hash storage
+      if (value !== undefined) {
+        
+        if (value.length > 0) {
+          newHash.insert(value[0], value[1]);
+        }
+      }
+    });
+    
+    this._storage = newHash._storage;
+  }  
 };
 
 
