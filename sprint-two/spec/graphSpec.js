@@ -69,15 +69,20 @@ describe('graph', function() {
     expect(graph.hasEdge(5, 5)).to.equal(true);
   });
   
-  xit('should return true if there is a valid path from node to node', function() {
+  it('should return true if there is a valid path from node to node', function() {
     graph.addNode(4);
     graph.addNode(5);
     graph.addNode(6);
-    graph.addEdge(5, 4);
+    graph.addNode(7);
+    graph.addNode(8);
     graph.addEdge(5, 6);
-    expect(graph.hasPath(4, 6)).to.equal(true);
-    graph.removeNode(5);
-    expect(graph.hasPath(4, 6)).to.equal(false);
+    graph.addEdge(5, 4);
+    graph.addEdge(6, 7);
+    graph.addEdge(6, 8);
+    
+    expect(graph.hasPath(4, 8)).to.equal(true);
+    graph.removeNode(6);
+    expect(graph.hasPath(4, 8)).to.equal(false);
   });
     
     

@@ -53,9 +53,7 @@ Graph.prototype.removeEdge = function(fromNode, toNode) {
 };
 
 // Pass in a callback which will be executed on each node of the graph.
-// O(n)
 Graph.prototype.forEachNode = function(cb) {
-  //iterate through graph
   for (let node in this) {
     if (node.search(/\d/) !== -1) {
       cb(this[node].value)
@@ -69,7 +67,7 @@ Graph.prototype.BreadthFirstSearch = function(fromNode, toNode) {
 
 
 //-----Beta------//
-/*Graph.prototype.hasPath = function(fromNode, toNode) {
+Graph.prototype.hasPath = function(fromNode, toNode) {
   //declare variable to track valid path from node to toNode
   let hasPath = this.hasEdge(fromNode, toNode);
   
@@ -78,23 +76,33 @@ Graph.prototype.BreadthFirstSearch = function(fromNode, toNode) {
     return true;
   }
   
+  //iterate through each
+  
+  
+  
   //searches edges of a current node and updates hasPath...
   //.. if a valid path is found
-  var searchEdges = function(current)  {
+  var holder = this;
+  var checked = [];
+  var searchEdges = function(current, graph)  {
     for (var i = 0; i < current.edges.length; i++) {
       let currentEdge = current.edges[i];
+      if (checked.indexOf(currentEdge) !== -1) {
+        continue;
+      }
+      checked.push(currentEdge);
       //update hasEdge if currentEdge === toNode
       if (currentEdge === toNode) {
         hasPath = true;
       } else if (!hasPath) {
-        searchEdges(this.currentEdge);
+        searchEdges(holder[currentEdge]);
       }
     }
   }
   
-  searchEdges(this.fromNode);
+  searchEdges(this[fromNode]);
   return hasPath;
-}*/
+}
 
 /*
  * Complexity: What is the time complexity of the above functions?

@@ -37,4 +37,19 @@ describe('binarySearchTree', function() {
     binarySearchTree.depthFirstLog(func);
     expect(array).to.eql([5, 2, 3, 7]);
   });
+  
+  //----pending----
+  it('should have a working "getMaxHeight" method', function() {  
+    binarySearchTree.insert(2);                                        
+    binarySearchTree.insert(3);
+    binarySearchTree.insert(7);
+    binarySearchTree.insert(4);
+    binarySearchTree.insert(6);
+    binarySearchTree.insert(8);
+    binarySearchTree.insert(9);
+    binarySearchTree.insert(10);
+    expect(binarySearchTree.getMaxHeight()).to.equal(5);
+  });
+  
+  
 });

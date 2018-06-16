@@ -8,6 +8,8 @@ var Tree = function(value) {
   newTree.addChild = treeMethods.addChild;
 
   newTree.contains = treeMethods.contains;
+  
+  newTree.forEach = treeMethods.forEach;
 
   return newTree;
 };
@@ -35,6 +37,18 @@ treeMethods.contains = function(target) {
   checkVal(this);
   return isTrue;
 };
+// O(n)
+treeMethods.forEach = function(func) {
+  let each = function(tree) {
+    if (tree.value !== undefined) {
+          func(tree.value)
+    }
+    for (let i = 0; i < tree.children.length; i++) {
+      each(tree.children[i]);
+    }
+  }
+  each(this);
+}
 
 
 

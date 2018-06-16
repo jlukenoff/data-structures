@@ -1,15 +1,19 @@
 var BinarySearchTree = function(value) {
   var tree = {};
   tree.value = value;
+  tree.height = 1;
+  
   // O(log n)
-  tree.insert = function(value, node) {
+  tree.insert = function(value, node, height) {
     node = node || tree;
+    height = height || 1;
     //check if value > node.value
     if (value > node.value) {
+      height++;
       //check if node.right 
       if (node.right) {
         //insert(value, node.right)
-        tree.insert(value, node.right);
+        tree.insert(value, node.right, height);
       } else {
       // else node.right = {value: value};
         node.right = {value: value};
@@ -17,15 +21,20 @@ var BinarySearchTree = function(value) {
     //check if value < node.value
     } else {     
       //check if node.left 
+      height++;
       if (node.left) {
         //insert(value, node.left)
-        tree.insert(value, node.left)
+        tree.insert(value, node.left, height)
       } else {
       // else node.left = {value: value};
         node.left = {value: value};
       }
     }
+    if (tree.height < height) {
+      tree.height = height;
+    }
   }
+  
   // O(log n)
   tree.contains = function(target, node) {
     node = node || tree;
@@ -41,6 +50,7 @@ var BinarySearchTree = function(value) {
     } 
     return false;   
   }
+  
   // O(n)
   tree.depthFirstLog = function(func, node) {
     node = node || tree;
@@ -55,7 +65,12 @@ var BinarySearchTree = function(value) {
     }
   }
   
-  return tree;
+  tree.getMaxHeight = function(/*func, node, level = 0*/) {
+    return tree.height;
+  }
+  
+  
+  return tree
 };
 
 
