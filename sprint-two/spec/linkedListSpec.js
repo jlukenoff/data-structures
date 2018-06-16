@@ -64,7 +64,7 @@ describe('linkedList', function() {
     linkedList.addToTail(3);
     expect(linkedList.head.next.prev.value).to.equal(5);
   });
-  it('should remove head and update previous', function() {
+  it('should remove head and update previous property', function() {
     linkedList.addToTail(5);
     linkedList.addToTail(6);
     linkedList.addToTail(3);

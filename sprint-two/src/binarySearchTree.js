@@ -1,7 +1,7 @@
 var BinarySearchTree = function(value) {
   var tree = {};
   tree.value = value;
-  
+  // O(log n)
   tree.insert = function(value, node) {
     node = node || tree;
     //check if value > node.value
@@ -26,7 +26,7 @@ var BinarySearchTree = function(value) {
       }
     }
   }
-  
+  // O(log n)
   tree.contains = function(target, node) {
     node = node || tree;
     if (target == node.value) {
@@ -41,7 +41,7 @@ var BinarySearchTree = function(value) {
     } 
     return false;   
   }
-  
+  // O(n)
   tree.depthFirstLog = function(func, node) {
     node = node || tree;
     func(node.value);

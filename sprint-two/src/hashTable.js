@@ -6,7 +6,6 @@ var HashTable = function(limit = 8) {
   
   //stores hash table array
   this._storage = LimitedArray(this._limit);
-  
   this._capacity = 0;
 };
 //For regular insert -> O(1), collision -> nearly O(1) and resizing is O(n)
@@ -26,7 +25,6 @@ HashTable.prototype.insert = function(k, v) {
     for (let i = 0; i < currentNode.length; i += 2) {
       //compare current key against given key
       if (currentNode[i] === k) {
-        
         //update duplicate tracker
         isDuplicate = true;
         //overwrite value for duplicate key
@@ -46,7 +44,7 @@ HashTable.prototype.insert = function(k, v) {
     //check if capacity >75% limit
     if (this._capacity > this._limit * .60) {
       //create new hash table array
-      this._limit *= 2
+      this._limit *= 2;
       let newHash = new HashTable(this._limit)
       
       //iterate through each node of current hash table
@@ -54,7 +52,6 @@ HashTable.prototype.insert = function(k, v) {
         //insert k:v pairs to new hash storage
         if (value !== undefined) newHash.insert(value[0], value[1]);
       });
-      
       this._storage = newHash._storage;
     }   
   }

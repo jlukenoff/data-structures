@@ -13,14 +13,14 @@ var Tree = function(value) {
 };
 
 var treeMethods = {};
-
+// O(1) runtime
 treeMethods.addChild = function(value) {
   //create new tree
   let tree = Tree(value);
   // push to current tree's children array
   this.children.push(tree);
 };
-
+// O(n)
 treeMethods.contains = function(target) {
   let isTrue = false;
   let checkVal = function(tree) {

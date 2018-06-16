@@ -68,4 +68,17 @@ describe('graph', function() {
     expect(graph.hasEdge(3, 5)).to.equal(true);
     expect(graph.hasEdge(5, 5)).to.equal(true);
   });
+  
+  xit('should return true if there is a valid path from node to node', function() {
+    graph.addNode(4);
+    graph.addNode(5);
+    graph.addNode(6);
+    graph.addEdge(5, 4);
+    graph.addEdge(5, 6);
+    expect(graph.hasPath(4, 6)).to.equal(true);
+    graph.removeNode(5);
+    expect(graph.hasPath(4, 6)).to.equal(false);
+  });
+    
+    
 });
