@@ -69,6 +69,22 @@ var BinarySearchTree = function(value) {
     return tree.height;
   }
   
+  tree.breadthFirstLog = function(func, node) {
+    node = node || tree;
+    var queue = [];
+    queue.push(node);
+    while (queue.length) {
+      node = queue.shift();
+      func(node.value)
+      if (node.left) {
+        queue.push(node.left);
+      }
+      if (node.right) {
+        queue.push(node.right);  
+      }
+    }
+  }
+  
   
   return tree
 };
